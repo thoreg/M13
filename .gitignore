@@ -1,0 +1,4 @@
+*.pyc
+*.mo
+.tags
+*.db
