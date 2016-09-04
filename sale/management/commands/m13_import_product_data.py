@@ -35,8 +35,8 @@ import csv
 import logging
 
 from django.core.management.base import BaseCommand
-from sale.models import Product, ProductDescriptionDE
 
+from sale.models import Product, ProductDescriptionDE
 
 log = logging.getLogger('main')
 
