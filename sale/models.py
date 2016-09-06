@@ -66,7 +66,21 @@ class Transaction(models.Model):
         verbose_name_plural = "Transactions"
 
     def __str__(self):
-        pass
+        return self.order_id
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.name
+
+
+class SubCategory(models.Model):
+    name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
@@ -79,8 +93,24 @@ class Product(models.Model):
     height = models.IntegerField(blank=True, null=True)
     depth = models.IntegerField(blank=True, null=True)
     color = models.CharField(max_length=32, blank=True, null=True)
+    category = models.ForeignKey(
+        Category,
+        blank=True,
+        null=True,
+        on_delete=models.DO_NOTHING)
+    subcategory = models.OneToOneField(
+        SubCategory,
+        blank=True,
+        null=True,
+        on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.name
 
 
 class ProductDescriptionDE(models.Model):
     product = models.OneToOneField(Product, primary_key=True)
     description = models.CharField(max_length=16384)
+
+    def __str__(self):
+        return self.product
