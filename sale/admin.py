@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Transaction, Product, SubCategory, Category
+
+from .models import Category, Product, SubCategory, Transaction
 
 
 class TransactionAdmin(admin.ModelAdmin):
