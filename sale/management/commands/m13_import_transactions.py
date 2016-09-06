@@ -30,8 +30,8 @@ from decimal import Decimal
 
 from dateutil import parser
 from django.core.management.base import BaseCommand
-from sale.models import Transaction
 
+from sale.models import Transaction
 
 log = logging.getLogger('main')
 
