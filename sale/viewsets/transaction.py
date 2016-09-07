@@ -34,4 +34,8 @@ class TransactionList(generics.ListAPIView):
                                           .values_list('sku', flat=True)
             queryset = queryset.filter(sku__in=list_of_skus)
 
+        sku = self.request.query_params.get('sku', None)
+        if sku is not None:
+            queryset = queryset.filter(sku=sku)
+
         return queryset
