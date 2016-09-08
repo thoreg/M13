@@ -1,0 +1,23 @@
+{
+  "name": "m13",
+  "homepage": "https://github.com/thoreg/m13",
+  "authors": [
+    "Thomas Rega <thoreg@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "bootstrap": "^3.3.7",
+    "d3": "^4.2.2",
+    "nvd3": "^1.8.4"
+  }
+}

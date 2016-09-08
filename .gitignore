@@ -2,3 +2,5 @@
 *.mo
 .tags
 *.db
+bower_components
+static
