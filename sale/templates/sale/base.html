@@ -57,7 +57,14 @@
                     <div ng-controller="NavigationController">
                         <ul>
                             <div ng-repeat="year in years">
-                                <li>{{ year }}</li>
+                                <li>
+                                    {{ year }}
+                                </li>
+                                <ul>
+                                    <div ng-repeat="month in months">
+                                        <li>{{ month }}</li>
+                                    </div>
+                                </ul>
                             </div>
                         </ul>
                     </div>
@@ -76,6 +83,8 @@
         <script src='{% static 'angular/angular.min.js' %}'></script>
 
         <script src='{% static 'js/app.js' %}'></script>
+        <script src='{% static 'js/transactions.ajax.js' %}'></script>
+        <script src='{% static 'js/transactions.data.js' %}'></script>
 
 
     </body>
