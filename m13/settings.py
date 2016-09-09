@@ -103,10 +103,11 @@ USE_TZ = True
 
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR)
 BOWER_INSTALLED_APPS = (
-    'jquery#^3.1.0',
+    'angularjs#^1.5.8',
     'bootstrap#^3.3.7',
     "d3#^4.2.2",
-    "nvd3#^1.8.4"
+    'jquery#^3.1.0',
+    "nvd3#^1.8.4",
 )
 
 
