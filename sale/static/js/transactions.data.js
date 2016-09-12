@@ -26,7 +26,7 @@ m13.factory('transactions', function() {
         return transactions.length;
     };
 
-    transactionService.reset = function() {
+    transactionService.reset = function() {  
         transactions = [];
         var transactionService = {};
     };

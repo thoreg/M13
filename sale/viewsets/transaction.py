@@ -14,7 +14,7 @@ class TransactionList(generics.ListAPIView):
     serializer_class = TransactionSerializer
 
     def get_queryset(self):
-        queryset = Transaction.objects.all()
+        queryset = Transaction.objects.all().exclude(sku__isnull=True)
 
         year = self.request.query_params.get('year', None)
         if year is not None:
