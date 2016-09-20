@@ -1,7 +1,6 @@
 from rest_framework import generics, viewsets
 
-
-from ..models import Transaction, Product
+from ..models import Product, Transaction
 from ..serializers import TransactionSerializer
 
 

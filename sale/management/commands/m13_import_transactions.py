@@ -26,9 +26,9 @@ The report about transactions comes on amazon_de with the following fields:
 """
 import csv
 import logging
+from datetime import datetime
 from decimal import Decimal
 
-from datetime import datetime
 from django.core.management.base import BaseCommand
 
 from sale.models import Transaction

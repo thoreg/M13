@@ -2,8 +2,8 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from sale.viewsets import TransactionList, TransactionDayStatsList
 from sale.views import index
+from sale.viewsets import TransactionDayStatsList, TransactionList
 
 urlpatterns = [
     url(r'^api-auth/',
