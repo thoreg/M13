@@ -26,9 +26,9 @@ The report about transactions comes on amazon_de with the following fields:
 """
 import csv
 import logging
+from datetime import datetime
 from decimal import Decimal
 
-from dateutil import parser
 from django.core.management.base import BaseCommand
 
 from sale.models import Transaction
@@ -49,8 +49,7 @@ def process_line(line):
     """
     log.debug(line)
     values = {
-        # line[0] => 01.01.2015 20:29:20 GMT+00:00
-        '_time': parser.parse(line[0]),
+        '_time': datetime.strptime(line[0], '%d.%m.%Y %H:%M:%S GMT+00:00'),
         # line[1] => "Abrechnungsnummer"
         '_type': line[2],
         'order_id': line[3],
