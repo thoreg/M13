@@ -1,11 +1,49 @@
-var m13 = angular.module('m13', []);
+/*******************************************************************************
+*
+* D3
+*
+*******************************************************************************/
+angular.module('d3', [])
+.factory('d3Service', ['$document', '$q', '$rootScope',
+    function($document, $q, $rootScope) {
+        var d = $q.defer();
+        function onScriptLoad() {
+            // Load client in the browser
+            $rootScope.$apply(function() { d.resolve(window.d3); });
+        }
+        // Create a script tag with d3 as the source
+        // and call our onScriptLoad callback when it
+        // has been loaded
+        var scriptTag = $document[0].createElement('script');
+        scriptTag.type = 'text/javascript';
+        scriptTag.async = true;
+        scriptTag.src = 'http://d3js.org/d3.v3.min.js';
+        scriptTag.onreadystatechange = function () {
+            if (this.readyState == 'complete') onScriptLoad();
+        }
+        scriptTag.onload = onScriptLoad;
 
-m13.config(function($httpProvider) {
+        var s = $document[0].getElementsByTagName('body')[0];
+        s.appendChild(scriptTag);
+
+        return {
+            d3: function() { return d.promise; }
+        };
+}]);
+
+/*******************************************************************************
+*
+* M13
+*
+*******************************************************************************/
+var m13 = angular.module('m13', ['d3'])
+
+.config(function($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-});
+})
 
-m13.controller('NavigationController', ['$scope', 'transactionFactory', 'transactions',
+.controller('NavigationController', ['$scope', 'transactionFactory', 'transactions',
                                      function ($scope, transactionFactory, transactions) {
 
     var self = this;
@@ -44,4 +82,11 @@ m13.controller('NavigationController', ['$scope', 'transactionFactory', 'transac
         debugger
     };
 
+}])
+
+.directive('barChart', ['d3Service', function(d3Service) {
+    return {
+        restrict: 'EA',
+        // directive code
+    }
 }]);
