@@ -114,3 +114,15 @@ class ProductDescriptionDE(models.Model):
 
     def __str__(self):
         return self.product
+
+
+class SalesRankHistory(models.Model):
+    product = models.ForeignKey(Product)
+    _time = models.DateTimeField(auto_now_add=True)
+    price = models.DecimalField(
+        max_digits=12,
+        decimal_places=2)
+    sales_rank = models.IntegerField()
+
+    def __str__(self):
+        return '{} {}'.format(self.product, self.salesrank)
