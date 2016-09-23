@@ -168,6 +168,10 @@ LOGGING = {
             'handlers': ['debug_console', 'mail_admins'],
             'level': 'DEBUG',
         },
+        'sale': {
+            'handlers': ['debug_console'],
+            'level': 'DEBUG',
+        },
     }
 }
 
