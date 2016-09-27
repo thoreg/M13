@@ -12,12 +12,12 @@ log = logging.getLogger(__name__)
 
 class Command(BaseCommand):
 
+    def add_arguments(self, parser):
+        parser.add_argument('driver', nargs='+')
+
     def handle(self, *args, **options):
-
+        driver = options.get('driver')[0]
         verbosity = options.get('verbosity')
-
-        print("live from cmd")
-        print(log.__dict__)
 
         if verbosity == 1:  # default
             log.setLevel(logging.WARN)
@@ -29,6 +29,6 @@ class Command(BaseCommand):
         log.debug("os.environ['AMAZON_USER_NAME']: {}".format(os.environ['AMAZON_USER_NAME']))
         log.debug("os.environ['AMAZON_PASSWORD']: {}".format(os.environ['AMAZON_PASSWORD']))
 
-        sales_rank_fetch_service = SalesRankFetchService(log)
+        sales_rank_fetch_service = SalesRankFetchService(log, driver)
         sales_rank_fetch_service.login()
         sales_rank_fetch_service.get_all_salesranks()

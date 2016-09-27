@@ -1,16 +1,28 @@
 # -*- coding: utf-8 -*-
 
 import json
-import logging
 import os
 import time
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from sale.models import Product, SalesRankHistory
 
 AMAZON_INVENTORY_URL = 'https://sellercentral.amazon.de/hz/inventory'
+
+# Amazon seems not to like the default user agent of phantomjs
+# With the following user agent settings it is possible to login via phantomjs
+# otherwise we get the error message to enable cookies and the login is not
+# possible
+USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) " +
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.57 Safari/537.36"
+)
+
+dcap = dict(DesiredCapabilities.PHANTOMJS)
+dcap["phantomjs.page.settings.userAgent"] = USER_AGENT
 
 
 class SalesRankFetchService():
@@ -19,19 +31,24 @@ class SalesRankFetchService():
     products without a valid sales_rank information ('-') or products with variants.
 
     """
-
-    def __init__(self, log):
+    def __init__(self, log, driver):
         self.log = log
         self.number_of_fetched_salesrank = 0
 
-        print(self.log.__dict__)
+        if driver == "firefox":
+            self.driver = webdriver.Firefox()
+
+        else:
+            self.driver = webdriver.PhantomJS(desired_capabilities=dcap)
+            self.driver.set_window_size(1024, 800)
+
+        self.driver.cookies_enabled = True
 
     def login(self):
         """
         Login to the amazon seller central website via selenium.
 
         """
-        self.driver = webdriver.Firefox()
         self.driver.get(os.environ['AMAZON_URL'])
 
         email = self.driver.find_element_by_id("ap_email")
