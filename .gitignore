@@ -4,3 +4,4 @@
 *.db
 bower_components
 /static
+ghostdriver.log
