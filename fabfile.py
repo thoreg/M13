@@ -37,10 +37,9 @@ env.use_ssh_config = True
 env.always_use_pty = True
 
 env.roledefs = {
-    'app': ['d186'],
+    'app': ['m13stats'],
 }
 
-env.app_server = 'd186'
 env.environment_dir = os.path.join(os.environ['M13_SERVER_PATH'], ENVIRONMENT)
 env.srv_dir = os.path.join(env.environment_dir, 'versions')
 env.envs_dir = os.path.join(os.environ['REMOTE_PYENV_ROOT'], 'versions')
