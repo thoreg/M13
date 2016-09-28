@@ -177,7 +177,7 @@ LOGGING = {
             'level': 'DEBUG',
         },
         'sale': {
-            'handlers': ['debug_console', 'sale_info'],
+            'handlers': ['sale_info'],
             'level': 'DEBUG',
         },
     }
