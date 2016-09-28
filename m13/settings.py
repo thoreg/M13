@@ -119,7 +119,7 @@ STATICFILES_FINDERS = [
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-
+LOG_DIR = os.environ['M13_LOG_DIR']
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -128,7 +128,7 @@ LOGGING = {
             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
         },
         'simple': {
-            'format': '%(levelname)s %(message)s'
+            'format': '%(asctime)s %(levelname)s %(message)s'
         },
     },
     'filters': {
@@ -152,7 +152,15 @@ LOGGING = {
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
-        }
+        },
+        'sale_info': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'sale_info.log'),
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
+            'backupCount': 5,
+            'formatter':'simple',
+        },
     },
     'loggers': {
         'django': {
@@ -169,7 +177,7 @@ LOGGING = {
             'level': 'DEBUG',
         },
         'sale': {
-            'handlers': ['debug_console'],
+            'handlers': ['debug_console', 'sale_info'],
             'level': 'DEBUG',
         },
     }
