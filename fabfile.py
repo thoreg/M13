@@ -27,6 +27,7 @@ PROJECT_NAME = 'm13'
 PYTHON_VERSION = '3.4.2'
 REPOSITORY = 'git@github.com:thoreg/m13.git'
 SETTINGS = 'm13.settings'
+LIVE_SERVER = "m13stats"  # defined in .ssh/config
 WHEELS_DIR = os.path.join(os.environ['M13_SERVER_PATH'], 'wheels')
 
 
@@ -37,7 +38,7 @@ env.use_ssh_config = True
 env.always_use_pty = True
 
 env.roledefs = {
-    'app': ['m13stats'],
+    'app': [LIVE_SERVER],
 }
 
 env.environment_dir = os.path.join(os.environ['M13_SERVER_PATH'], ENVIRONMENT)
@@ -274,3 +275,40 @@ def get_active_environment():
         current_environment = run("readlink live")
         print("Current environment: {}".format(current_environment))
         return os.path.basename(current_environment)
+
+
+@task
+@roles('app')
+def sync_local_db_with_live_db():
+    """
+    Get the live database to the local db for development.
+
+    - Dump the live database on the remote server
+    - Copy the dump file to the local
+    - Insert the downloaded file and delete it
+
+    """
+    print("\nSync the local database with the live database ...")
+    dump_name = '{}-m13-stats-db.sql'.format(datetime.now().strftime("%Y%m%dT%H%M"))
+    params = {
+        'db': os.environ['M13_DATABASE'],
+        'dump_name': dump_name,
+        'dump_path': os.path.join(env.environment_dir, 'dumps', dump_name),
+        'localhost': '127.0.0.1',
+        'server': LIVE_SERVER,
+        'user': os.environ['M13_DATABASE_USER'],
+    }
+
+    # Drop local db and create new
+    local('psql -h {localhost} -c "DROP DATABASE {db}" postgres'.format(**params))
+    local('psql -h {localhost} -c "CREATE DATABASE {db} WITH OWNER {user}" postgres'.format(**params))
+
+    # Dump db on live
+    run('pg_dump -h {localhost} -U {user} {db} > {dump_path}'.format(**params))
+
+    # Insert the live dump in local db
+    local('scp {server}:{dump_path} .'.format(**params))
+    local('psql -U {user} {db} < {dump_name}'.format(**params))
+    local('rm {dump_name}'.format(**params))
+
+    ok()
