@@ -3,7 +3,6 @@ import time
 from collections import OrderedDict
 from decimal import Decimal
 
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
@@ -37,7 +36,7 @@ class ProductDetailView(TemplateView):
 
         charts = []
         xdata = []
-        result = OrderedDict()
+
         date_format = DATE_FORMATS[suffix]
 
         extra_y = {
@@ -47,6 +46,7 @@ class ProductDetailView(TemplateView):
             },
         }
 
+        result = OrderedDict()
         for entry in history_entries:
             try:
                 result['salesrank'].append((entry['_time'], entry['salesrank']))
