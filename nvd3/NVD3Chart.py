@@ -10,9 +10,12 @@ Project location : https://github.com/areski/python-nvd3
 """
 
 from __future__ import unicode_literals
+
 from optparse import OptionParser
+
 from jinja2 import Environment, PackageLoader
 from slugify import slugify
+
 try:
     import simplejson as json
 except ImportError:

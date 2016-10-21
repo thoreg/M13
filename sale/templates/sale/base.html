@@ -1,89 +1,85 @@
 {% load nvd3_tags static %}
 <!DOCTYPE html>
-<html lang="de" ng-app="m13">
-{% spaceless %}
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>
-            {% block title %}
-            {% endblock %}
-        </title>
+<html lang="de">
 
-        {% include_chart_jscss %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
 
-        <link href='{% static 'bootstrap/dist/css/bootstrap.min.css' %}' rel="stylesheet">
-        <link href='{% static 'css/base.css' %}' rel="stylesheet">
-    </head>
-    <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">
-                        M13
-                    </a>
-                </div>
-                <div id="navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#transactions">Sales</a></li>
-                        <li><a href="#salesrank">SalesRank</a></li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </nav>
+    <script src='{% static 'jquery/dist/jquery.min.js' %}'></script>
+    <script src='{% static 'bootstrap/dist/js/bootstrap.min.js' %}'></script>
+    <script src='{% static 'd3/d3.js' %}'></script>
+    <script src='{% static 'nvd3/build/nv.d3.js' %}'></script>
 
-        {% comment %}
+    <link href='{% static 'bootstrap/dist/css/bootstrap.min.css' %}' rel="stylesheet">
+    <link href='{% static 'nvd3/build/nv.d3.css' %}' rel="stylesheet">
+    <link href='{% static 'css/base.css' %}' rel="stylesheet">
+    {% block extra_js %}
+    {% endblock %}
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <div class="row">
-            <pre>
-                {{ result }}
-            </pre>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    M13
+                </a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#transactions">Sales</a></li>
+                    <li><a href="#salesrank">SalesRank</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    <div class="container content">
+        <div class="row">
+            <div class="col-xs-12 main">
+                {% block main %}
+                {% endblock %}
             </div>
         </div>
-        {% endcomment %}
+    </div>
 
-        <div class="container content">
-            <div class="row">
-                <div class="col-sm-3 sidebar">
-                    {% verbatim %}
-                    <div ng-controller="NavigationController">
-                        <ul>
-                            <div ng-repeat="year in years">
-                                <li>
-                                    {{ year }}
-                                </li>
-                                <ul>
-                                    <div ng-repeat="month in months">
-                                        <li>{{ month }}</li>
-                                    </div>
-                                </ul>
-                            </div>
-                        </ul>
-                    </div>
-                    {% endverbatim %}
-                </div>
-                <div class="col-sm-8 col-sm-offset-1 main">
-                    {% block main %}
-                    {% endblock %}
-                </div>
-            </div>
-        </div>
-        <script src='{% static 'jquery/dist/jquery.min.js' %}'></script>
-        <script src='{% static 'bootstrap/dist/js/bootstrap.min.js' %}'></script>
-        <script src='{% static 'angular/angular.min.js' %}'></script>
 
-        <script src='{% static 'js/app.js' %}'></script>
-        <script src='{% static 'js/transactions.ajax.js' %}'></script>
-        <script src='{% static 'js/transactions.data.js' %}'></script>
+    <!--
+    <script src='{% static 'angular/angular.min.js' %}'></script>
+    <script src='{% static 'd3/d3.js' %}'></script>
+    <script src='{% static 'nvd3/build/nv.d3.js' %}'></script>
+    <script src='{% static 'angular-nvd3/dist/angular-nvd3.js' %}'></script>
+    -->
 
-    </body>
-{% endspaceless %}
+    {% comment %}
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+    <script src="https://rawgit.com/krispo/angular-nvd3/v1.0.5/dist/angular-nvd3.js"></script>
+    {% endcomment %}
+
+    <!--
+    <script src='{% static 'js/app.js' %}'></script>
+    <script src='{% static 'js/transactions.ajax.js' %}'></script>
+    <script src='{% static 'js/transactions.data.js' %}'></script>
+    <script src='{% static 'js/salesrankhistory.ajax.js' %}'></script>
+    <script src='{% static 'js/salesrankhistory.data.js' %}'></script>
+    -->
+
+</body>
+
 </html>

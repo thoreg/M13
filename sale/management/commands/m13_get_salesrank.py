@@ -5,7 +5,7 @@ import os
 
 from django.core.management.base import BaseCommand
 
-from sale.services.sales_rank import SalesRankFetchService
+from sale.services.salesrank import SalesRankFetchService
 
 log = logging.getLogger(__name__)
 
@@ -29,6 +29,6 @@ class Command(BaseCommand):
         log.debug("os.environ['AMAZON_USER_NAME']: {}".format(os.environ['AMAZON_USER_NAME']))
         log.debug("os.environ['AMAZON_PASSWORD']: {}".format(os.environ['AMAZON_PASSWORD']))
 
-        sales_rank_fetch_service = SalesRankFetchService(log, driver)
-        sales_rank_fetch_service.login()
-        sales_rank_fetch_service.get_all_salesranks()
+        salesrank_fetch_service = SalesRankFetchService(log, driver)
+        salesrank_fetch_service.login()
+        salesrank_fetch_service.get_all_salesranks()

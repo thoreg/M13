@@ -1,8 +1,16 @@
 body {
-    background-color: #404040;
-    color: #fff;
+    background-color: #F3D4A6;
+    color: #222222;
 }
 
 .content {
     margin-top: 75px;
+}
+
+.main {
+    min-height: 1024px;
+}
+
+.m13-chart {
+    margin: 3em auto;
 }

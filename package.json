@@ -1,0 +1,27 @@
+{
+  "name": "m13",
+  "version": "1.0.0",
+  "description": "Tools of the M13 crew",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thoreg/m13.git"
+  },
+  "keywords": [
+    "M13",
+    "Manufaktur13"
+  ],
+  "author": "Thomas Rega",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thoreg/m13/issues"
+  },
+  "homepage": "https://github.com/thoreg/m13#readme",
+  "devDependencies": {
+    "eslint": "^3.6.1",
+    "eslint-config-google": "^0.6.0"
+  }
+}

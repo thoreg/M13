@@ -105,7 +105,7 @@ class Product(models.Model):
         on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return self.name
+        return '{} - {}'.format(self.sku, self.name)
 
 
 class ProductDescriptionDE(models.Model):
@@ -116,13 +116,30 @@ class ProductDescriptionDE(models.Model):
         return self.product
 
 
-class SalesRankHistory(models.Model):
+class BaseSalesRankHistory(models.Model):
     product = models.ForeignKey(Product)
-    _time = models.DateTimeField(auto_now_add=True)
     price = models.DecimalField(
         max_digits=12,
         decimal_places=2)
-    sales_rank = models.IntegerField()
+    salesrank = models.IntegerField()
+
+    class Meta:
+        abstract = True
+
+
+class SalesRankHistory(BaseSalesRankHistory):
+    _time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return '{} {}'.format(self.product, self.salesrank)
+        return '{} {} {}'.format(self.product, self.salesrank, self.price)
+
+
+class SalesRankHistoryByDay(BaseSalesRankHistory):
+    _time = models.DateTimeField()
+
+    def __str__(self):
+        return '[ by_day ] {} {} {} {}'.format(
+            self.product.name[:20],
+            self._time,
+            self.salesrank,
+            self.price)

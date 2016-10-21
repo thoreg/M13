@@ -11,5 +11,5 @@ class SalesRankHistorySerializer(serializers.ModelSerializer):
             'product',
             '_time',
             'price',
-            'sales_rank'
+            'salesrank'
         )
