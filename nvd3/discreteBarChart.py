@@ -135,4 +135,3 @@ class discreteBarChart(TemplateMixin, NVD3Chart):
 
         if not tooltips:
             self.chart_attr = {'tooltips': 'false'}
-

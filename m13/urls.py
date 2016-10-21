@@ -2,7 +2,7 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from sale.views import index, ProductDetailView
+from sale.views import ProductDetailView, index
 from sale.viewsets import (SalesRankHistoryList, TransactionDayStatsList,
                            TransactionList)
 

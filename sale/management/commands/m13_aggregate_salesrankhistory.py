@@ -27,4 +27,3 @@ class Command(BaseCommand):
         for product in Product.objects.all():
             print('Aggregate: {}'.format(product.sku))
             srvc.aggregate_salesrank_history_by_day(product.sku, dryrun=False)
-
