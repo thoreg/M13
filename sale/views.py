@@ -30,10 +30,16 @@ class ProductDetailView(TemplateView):
         return super(ProductDetailView, self).dispatch(*args, **kwargs)
 
     def get_price_and_salesrank_history_charts(self, history_entries, suffix):
+        DATE_FORMATS = {
+            'by_day': '%Y-%m-%d',
+            'plain': '%Y-%m-%d %H'
+        }
+
         charts = []
         xdata = []
         result = OrderedDict()
-        date_format = '%Y-%m-%d'
+        date_format = DATE_FORMATS[suffix]
+
         extra_y = {
             'tooltip': {
                 'y_start': 'There are ',
