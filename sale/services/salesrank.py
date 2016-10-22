@@ -28,9 +28,10 @@ dcap["phantomjs.page.settings.userAgent"] = USER_AGENT
 class SalesRankFetchService():
     """
     Get the current sales rank for all procducts of the inventory page. Ignore
-    products without a valid sales_rank information ('-') or products with variants.
+    products without a valid salesrank information ('-') or products with variants.
 
     """
+
     def __init__(self, log, driver):
         self.log = log
         self.number_of_fetched_salesrank = 0
@@ -82,25 +83,25 @@ class SalesRankFetchService():
             if row.find_all('td', attrs={'data-column': 'sku'}):
                 self.process_row(row)
 
-        self.log.info('Number of fetched sales_rank: {}'.format(self.number_of_fetched_salesrank))
+        self.log.info('Number of fetched salesrank: {}'.format(self.number_of_fetched_salesrank))
 
     def process_row(self, row):
         sku = ''
-        sales_rank = ''
+        salesrank = ''
         price = ''
 
         sku = row.find_all('td', attrs={'data-column': "sku"})[0]
         sku = sku.text.split()[0]
 
         try:
-            sales_rank = row.find_all('td', attrs={'data-column': 'sales_rank'})[0]
-            if sales_rank:
-                sales_rank = sales_rank.text.split()[0].replace('.', '')
+            salesrank = row.find_all('td', attrs={'data-column': 'sales_rank'})[0]
+            if salesrank:
+                salesrank = salesrank.text.split()[0].replace('.', '')
 
         except IndexError:
             return
 
-        if sales_rank == '-':
+        if salesrank == '-':
             return
 
         price = row.find_all('span', attrs={'data-myitable-inline-changed': True})
@@ -111,17 +112,17 @@ class SalesRankFetchService():
                 price = json.loads(price[0]['data-myitable-inline-changed'])['original']
             except IndexError:
                 self.log.debug('No price found for SKU: {} SalesRank: {}'.format(
-                    sku, sales_rank))
+                    sku, salesrank))
                 return
 
         price = price.replace(',', '.')
 
-        self.log.debug('SKU: {} SalesRank: {} Price: {}'.format(sku, sales_rank, price))
+        self.log.debug('SKU: {} SalesRank: {} Price: {}'.format(sku, salesrank, price))
 
         product = Product.objects.get(sku=sku)
-        sales_rank_history_entry = SalesRankHistory(product=product,
-                                                    price=price,
-                                                    sales_rank=sales_rank)
-        sales_rank_history_entry.save()
+        salesrank_history_entry = SalesRankHistory(product=product,
+                                                   price=price,
+                                                   salesrank=salesrank)
+        salesrank_history_entry.save()
 
         self.number_of_fetched_salesrank += 1
