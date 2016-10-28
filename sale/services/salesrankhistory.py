@@ -14,6 +14,7 @@ class SalesRankHistoryAggregationService():
     If not dryrun then write the result to the database.
 
     """
+
     def aggregate_salesrank_history_by_day(self, sku, begin=None, end=None, dryrun=True):
         print('   aggregate sku: {}'.format(sku))
         params = {

@@ -2,13 +2,15 @@ import logging
 import time
 from collections import OrderedDict
 from decimal import Decimal
+from pprint import pprint
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
-from .models import Product, SalesRankHistory, SalesRankHistoryByDay
+from .models import (Category, Product, SalesRankHistory,
+                     SalesRankHistoryByDay, TransactionsByDay)
 
 log = logging.getLogger('sale')
 
@@ -19,6 +21,78 @@ def index(request):
     context = {}
 
     return render(request, 'sale/index.html', context)
+
+
+class IndexView(TemplateView):
+    template_name = 'sale/index.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(IndexView, self).dispatch(*args, **kwargs)
+
+    def get_buckets_turnover_by_category(self):
+        """
+        Group all the data per category.
+
+        """
+        transactions = TransactionsByDay.objects.select_related('category')
+
+        turnover = transactions.values_list('category__name', 'turnover', '_time')
+        buckets = {}
+        for category, value, _time in turnover:
+            if category not in buckets:
+                buckets[category] = []
+            buckets[category].append((_time, value))
+
+        return buckets
+
+    def get_turnover_by_category_chart(self):
+        buckets = self.get_buckets_turnover_by_category()
+        chartdata = {}
+        xdata = []
+        extra_serie = {"tooltip": {"y_start": "There are ", "y_end": " calls"}}
+
+        for idx, (category, values) in enumerate(buckets.items()):
+            # print(category, values)
+            idx += 1
+            ydata = []
+            for _time, turnover_sum in values:
+
+                if len(values) > len(xdata):
+                    print("len(values): {} len(xdata): {}".format(len(values), len(xdata)))
+                    xdata = []
+                    for _time, _not_used in values:
+                        xdata.append(to_js_date(_time))
+
+                if isinstance(turnover_sum, Decimal):
+                    turnover_sum = float('{}'.format(turnover_sum))
+                ydata.append(turnover_sum)
+
+            chartdata.update({
+                'name{}'.format(idx): '{}'.format(category),
+                'y{}'.format(idx): ydata,
+                'extra{}'.format(idx): extra_serie,
+            })
+
+        chartdata['x'] = sorted(xdata)
+        chart = {
+            'charttype': "multiBarChart",
+            'chartdata': chartdata,
+            'extra': {
+                'x_is_date': True,
+                'x_axis_format': '%Y-%m-%d',
+                'color_category': 'category20',
+                'container_name': 'turnover_sum_by_category_and_day',
+            }
+        }
+
+        return chart
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context['turnover_by_category'] = self.get_turnover_by_category_chart()
+        pprint(context)
+        return context
 
 
 class ProductDetailView(TemplateView):

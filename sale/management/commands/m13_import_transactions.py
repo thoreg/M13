@@ -31,7 +31,7 @@ from decimal import Decimal
 
 from django.core.management.base import BaseCommand
 
-from sale.models import Transaction
+from sale.models import Product, Transaction
 
 log = logging.getLogger('main')
 
@@ -48,12 +48,20 @@ def process_line(line):
 
     """
     log.debug(line)
+    sku = line[4]
+
+    try:
+        product = Product.objects.get(sku=sku)
+    except Product.DoesNotExist:
+        print('!!! sku: {} not found !!!'.format(sku))
+        product = None
+
     values = {
         '_time': datetime.strptime(line[0], '%d.%m.%Y %H:%M:%S GMT+00:00'),
         # line[1] => "Abrechnungsnummer"
         '_type': line[2],
         'order_id': line[3],
-        'sku': line[4],
+        'product': product,  # line[4]
         # line[5] => description
         'amount': line[6] or 0,
         'marketplace': line[7],

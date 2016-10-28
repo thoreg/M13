@@ -3,7 +3,6 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
-
 from sale.views import IndexView, ProductDetailView
 from sale.viewsets import (SalesRankHistoryList, TransactionDayStatsList,
                            TransactionList)

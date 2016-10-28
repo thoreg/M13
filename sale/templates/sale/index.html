@@ -2,13 +2,9 @@
 {% load nvd3_tags static %}
 
 {% block extra_js %}
-    {% for chart in charts %}
+    {% with turnover_by_category as chart %}
         {% load_chart chart.charttype chart.chartdata chart.container_name chart.extra %}
-    {% empty %}
-        <!-- no charts available -->
-    {% endfor %}
-
-
+    {% endwith %}
 {% endblock %}
 
 {% block title %}
@@ -16,12 +12,10 @@
 {% endblock %}
 
 {% block main %}
-    {% for chart in charts %}
-        <h4>{{ chart.category }}</h4>
-        <div class="m13-chart">
+    <h4>Sales by Category</h4>
+    <div class="m13-chart">
+        {% with turnover_by_category as chart %}
             {% include_container chart.container_name 400 '100%' %}
-        </div>
-    {% empty %}
-        No charts available Dude
-    {% endfor %}
+        {% endwith %}
+    </div>
 {% endblock %}
