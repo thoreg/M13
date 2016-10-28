@@ -1,6 +1,13 @@
+@font-face {
+    font-family: "Oswald";
+    src: url("/static/fonts/Oswald-Regular.ttf");
+}
+
 body {
     background-color: #F3D4A6;
     color: #222222;
+    font-family: Oswald,monospace;
+    font-size: 1.2rem;
 }
 
 .content {
@@ -62,4 +69,8 @@ body {
     -webkit-border-radius: 6px 0 6px 6px;
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
+}
+
+label {
+    margin-right: 10px;
 }

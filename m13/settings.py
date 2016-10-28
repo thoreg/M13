@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'djangobower',
     'rest_framework',
 
+    'm13',
     'sale'
 ]
 
