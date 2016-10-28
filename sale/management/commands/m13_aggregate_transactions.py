@@ -4,8 +4,8 @@ import logging
 
 from django.core.management.base import BaseCommand
 
-from sale.models import Product
-from sale.services.salesrankhistory import SalesRankHistoryAggregationService
+from sale.models import Category
+from sale.services.transaction import TransactionAggregationService
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +22,8 @@ class Command(BaseCommand):
         if verbosity > 2:
             log.setLevel(logging.DEBUG)
 
-        srvc = SalesRankHistoryAggregationService()
-        for product in Product.objects.all():
-            print('Aggregate: {}'.format(product.sku))
-            srvc.aggregate_salesrank_history_by_day(product.sku, dryrun=False)
+        srvc = TransactionAggregationService(logger=log)
+
+        for category in Category.objects.all():
+            log.info('Aggregate Category: {}'.format(category))
+            srvc.aggregate_transactions_by_category_and_day(category, dryrun=False)

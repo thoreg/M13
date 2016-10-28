@@ -9,9 +9,9 @@ class Transaction(models.Model):
         max_length=32,
         blank=True,
         null=True)
-    sku = models.CharField(
-        max_length=32,
-        blank=True,
+    product = models.ForeignKey(
+        'Product',
+        blank='',
         null=True)
     amount = models.PositiveSmallIntegerField(
         blank=True,
@@ -143,3 +143,11 @@ class SalesRankHistoryByDay(BaseSalesRankHistory):
             self._time,
             self.salesrank,
             self.price)
+
+
+class TransactionsByDay(models.Model):
+    category = models.ForeignKey('Category')
+    _time = models.DateField()
+    turnover = models.DecimalField(
+        max_digits=12,
+        decimal_places=2)

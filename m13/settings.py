@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'djangobower',
     'rest_framework',
 
+    'm13',
     'sale'
 ]
 
@@ -45,8 +46,9 @@ ROOT_URLCONF = 'm13.urls'
 
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [],
-    'APP_DIRS': True,
+    'DIRS': [
+        os.path.join(BASE_DIR, 'templates')
+    ],
     'OPTIONS': {
         'context_processors': [
             'django.template.context_processors.debug',
@@ -54,6 +56,12 @@ TEMPLATES = [{
             'django.contrib.auth.context_processors.auth',
             'django.contrib.messages.context_processors.messages',
             'sale.context_processors.products'
+        ],
+        'loaders': [
+            ('django.template.loaders.cached.Loader', [
+                'django.template.loaders.app_directories.Loader',
+                'django.template.loaders.filesystem.Loader',
+            ]),
         ],
     },
 }]
@@ -176,7 +184,7 @@ LOGGING = {
             'level': 'DEBUG',
         },
         'sale': {
-            'handlers': ['sale_info'],
+            'handlers': ['sale_info', 'console'],
             'level': 'DEBUG',
         },
     }
@@ -186,3 +194,5 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
 }
+
+LOGIN_URL = '/login/'
