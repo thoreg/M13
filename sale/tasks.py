@@ -1,6 +1,7 @@
 from celery.decorators import task
 # from celery.task.schedules import crontab
 from celery.utils.log import get_task_logger
+
 from django.core import management
 
 logger = get_task_logger(__name__)

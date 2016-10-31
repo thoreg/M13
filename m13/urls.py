@@ -4,8 +4,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
 from sale.views import IndexView, ProductDetailView
-from sale.viewsets import (SalesRankHistoryList, TransactionDayStatsList,
-                           TransactionList)
+from sale.viewsets import SalesRankHistoryList, TransactionDayStatsList, TransactionList
 
 urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
