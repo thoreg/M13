@@ -19,8 +19,7 @@ import sys
 from contextlib import contextmanager
 from datetime import datetime
 
-from fabric.api import (cd, env, execute, hide, local, prefix, roles, run,
-                        sudo, task)
+from fabric.api import cd, env, execute, hide, local, prefix, roles, run, sudo, task
 
 ENVIRONMENT = 'live'
 PROJECT_NAME = 'm13'
