@@ -1,21 +1,227 @@
 {% extends "base.html" %}
-{% load nvd3_tags static %}
-
-{% block extra_js %}
-    {% with turnover_by_category as chart %}
-        {% load_chart chart.charttype chart.chartdata chart.container_name chart.extra %}
-    {% endwith %}
-{% endblock %}
 
 {% block title %}
     M13 Statistics
 {% endblock %}
 
 {% block main %}
+
+    <style>
+        .axis path,
+        .axis line {
+          fill: none;
+          stroke: #000;
+          shape-rendering: crispEdges;
+        }
+        .line {
+          fill: none;
+          stroke: steelblue;
+          stroke-width: 1.5px;
+        }
+
+        #test1 {
+            margin: 0;
+            padding: 0;
+            overflow: none;
+        }
+
+    </style>
+
     <h4>Sales by Category</h4>
-    <div class="m13-chart">
-        {% with turnover_by_category as chart %}
-            {% include_container chart.container_name 400 '100%' %}
-        {% endwith %}
+
+    <div id="test1">
+        <svg></svg>
     </div>
+
+    <script>
+        // var margin = {top: 20, right: 20, bottom: 30, left: 50},
+        //     width = 960 - margin.left - margin.right,
+        //     height = 500 - margin.top - margin.bottom;
+        var margin = {top: 20, right: 20, bottom: 30, left: 50},
+            width = 1024,
+            height = 500 - margin.top - margin.bottom;
+
+        var parseDate = d3.timeFormat("%Y-%m-%d").parse; // for dates like "2014-01-01"
+        //var parseDate = d3.time.format("%Y-%m-%dT00:00:00Z").parse;  // for dates like "2014-01-01T00:00:00Z"
+
+        var x = d3.time.scale()
+            .range([0, width]);
+
+        var y = d3.scale.linear()
+            .range([height, 0]);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left");
+
+        var line = d3.svg.line()
+            .x(function(d) {
+                return x(d.date);
+            })
+            .y(function(d) { return y(d.turnover); });
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        d3.json("{% url "transactions-by-day" %}?category=TBag&year=2015", function(error, data) {
+            data.forEach(function(d) {
+                console.log(d.date);
+                // debugger
+
+                d.date = parseDate(d.date);
+                console.log(d.date);
+
+                d.turnover = +d.turnover;
+            });
+
+            x.domain(d3.extent(data, function(d) { return d.date; }));
+            y.domain(d3.extent(data, function(d) { return d.turnover; }));
+
+            svg.append("g")
+               .attr("class", "x axis")
+               .attr("transform", "translate(0," + height + ")")
+               .call(xAxis);
+
+            svg.append("g")
+               .attr("class", "y axis")
+               .call(yAxis)
+              .append("text")
+               .attr("transform", "rotate(-90)")
+               .attr("y", 6)
+               .attr("dy", ".71em")
+               .style("text-anchor", "end")
+               .text("Umsatz");
+
+          svg.append("path")
+              .datum(data)
+              .attr("class", "line")
+              .attr("d", line)
+              .attr("id", "myPath")
+              .on("mouseover", mouseover)
+              .on("mousemove", mousemove)
+              .on("mouseout", mouseout);
+        });
+
+        var div = d3.select("body")
+            .append("div")
+                .attr("class", "tip");
+                // .style("display", "none");
+
+
+        function mouseover(a, b, c, d, e) {
+        }
+
+        function mousemove() {
+            debugger
+            var m = d3.mouse(this);
+            d3.select("#myPath").select("title").text(m[1]);
+        }
+
+        function mouseout() {
+        }
+
+        /***********************************************************************/
+
+        var margin = {top: 30, right: 10, bottom: 50, left: 60};
+        var chart = d3LineWithLegend()
+                        .xAxis.label('Time (ms)')
+                        .width(width(margin))
+                        .height(height(margin))
+                        .yAxis.label('Voltage (v)');
+
+        var svg = d3.select('#test1 svg')
+                    .datum(generateData())
+
+        svg.transition().duration(500)
+            .attr('width', width(margin))
+            .attr('height', height(margin))
+            .call(chart);
+
+        chart.dispatch.on('showTooltip', function(e) {
+            var offset = $('#test1').offset(), // { left: 0, top: 0 }
+                left = e.pos[0] + offset.left,
+                top = e.pos[1] + offset.top,
+                formatter = d3.format(".04f");
+
+            var content = '<h3>' + e.series.label + '</h3>' +
+                          '<p>' +
+                          '<span class="value">[' + e.point[0] + ', ' + formatter(e.point[1]) + ']</span>' +
+                          '</p>';
+
+            nvtooltip.show([left, top], content);
+        });
+
+        chart.dispatch.on('hideTooltip', function(e) {
+            nvtooltip.cleanup();
+        });
+
+        $(window).resize(function() {
+            var margin = chart.margin();
+
+            chart
+              .width(width(margin))
+              .height(height(margin));
+
+            d3.select('#test1 svg')
+              .attr('width', width(margin))
+              .attr('height', height(margin))
+              .call(chart);
+
+        });
+
+        function width(margin) {
+            var w = $(window).width() - 20;
+            return ( (w - margin.left - margin.right - 20) < 0 ) ? margin.left + margin.right + 2 : w;
+        }
+
+        function height(margin) {
+            var h = $(window).height() - 20;
+            return ( h - margin.top - margin.bottom - 20 < 0 ) ? margin.top + margin.bottom + 2 : h;
+        }
+
+        //data
+        function generateData() {
+            var sin = [],
+                sin2 = [],
+                cos = [],
+                cos2 = [],
+                r1 = Math.random(),
+                r2 = Math.random(),
+                r3 = Math.random(),
+                r4 = Math.random();
+
+            for (var i = 0; i < 100; i++) {
+                sin.push([ i, r1 * Math.sin( r2 +  i / (10 * (r4 + .5) ))]);
+                cos.push([ i, r2 * Math.cos( r3 + i / (10 * (r3 + .5) ))]);
+                sin2.push([ i, r3 * Math.sin( r1 + i / (10 * (r2 + .5) ))]);
+                cos2.push([ i, r4 * Math.cos( r4 + i / (10 * (r1 + .5) ))]);
+            }
+
+            return [{
+                data: sin,
+                label: "Sine Wave"
+            },
+            {
+                data: cos,
+                label: "Cosine Wave"
+            },
+            {
+                data: sin2,
+                label: "Sine2 Wave"
+            },
+            {
+                data: cos2,
+                label: "Cosine2 Wave"
+            }];
+    }
+    </script>
+
+
 {% endblock %}

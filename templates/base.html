@@ -1,4 +1,4 @@
-{% load nvd3_tags static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -12,11 +12,16 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
     <script src='{% static 'jquery/dist/jquery.min.js' %}'></script>
     <script src='{% static 'bootstrap/dist/js/bootstrap.min.js' %}'></script>
-    <script src='{% static 'd3/d3.js' %}'></script>
-    <script src='{% static 'nvd3/build/nv.d3.js' %}'></script>
+
+    <script src='{% static 'js/lib/d3.v4.js' %}'></script>
+    <script src='{% static 'js/lib/nvtooltip.js' %}'></script>
+    <script src='{% static 'js/lib/d3legend.js' %}'></script>
+    <script src='{% static 'js/lib/d3line.js' %}'></script>
+    <script src='{% static 'js/lib/d3linewithlegend.js' %}'></script>
 
     <link href='{% static 'bootstrap/dist/css/bootstrap.min.css' %}' rel="stylesheet">
-    <link href='{% static 'nvd3/build/nv.d3.css' %}' rel="stylesheet">
+
+    <link href='{% static 'css/d3.css' %}' rel="stylesheet">
     <link href='{% static 'css/base.css' %}' rel="stylesheet">
     {% block extra_js %}
     {% endblock %}

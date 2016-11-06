@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_extensions',
-    'django_nvd3',
     'djangobower',
     'djcelery',
     'rest_framework',
@@ -115,9 +114,7 @@ BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR)
 BOWER_INSTALLED_APPS = (
     'angularjs#^1.5.8',
     'bootstrap#^3.3.7',
-    "d3#^4.2.2",
     'jquery#^3.1.0',
-    "nvd3#^1.8.4",
 )
 
 
