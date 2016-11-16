@@ -10,7 +10,7 @@ celery==3.1.24
 decorator==4.0.10
 Django==1.10.3
 django-bower==5.2.0
--e git+https://github.com/yyuu/pyenv.git@eb2e5ac4c4429444fe2cd6d6696e77967ec688f9#egg=django_celery
+-e git://github.com/thoreg/django-celery.git@6232c79557517afa74967fcb980c0db2fb1174d8#egg=django_celery-master
 django-extensions==1.7.3
 django-filter==0.15.3
 djangorestframework==3.5.2
