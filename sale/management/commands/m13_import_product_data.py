@@ -33,6 +33,7 @@ fulfillment-channel
 """
 import csv
 import logging
+import sys
 
 from django.core.management.base import BaseCommand
 
@@ -52,25 +53,23 @@ def process_line(line):
     Create an entry in the transaction table with information of interest.
 
     """
-    log.debug(line)
-
     sku = line[3]
-    values = {
-        'name': line[0],
-        'sku': sku,
-        'asin': line[16],
 
-    }
+    log.info('Processing: {name} {sku} {asin}'.format(
+        **{'name': line[0], 'sku': sku, 'asin': line[16]})
+    )
 
-    product, created_product = Product.objects.update_or_create(**values)
-    log.debug('Created Product: {}'.format(created_product))
+    try:
+        product, created_product = Product.objects.update_or_create(
+            sku=sku, defaults={'name': line[0], 'asin': line[16]})
+        log.info('    Created Product: {}'.format(created_product))
 
-    values = {
-        'product': product,
-        'description': line[1],
-    }
-    obj, created_description = ProductDescriptionDE.objects.update_or_create(**values)
-    log.debug('Created Description: {}'.format(created_description))
+        obj, created_description = ProductDescriptionDE.objects \
+            .update_or_create(product=product, defaults={'description': line[1]})
+        log.info('    Created Description: {}'.format(created_description))
+
+    except:
+        log.error("Unexpected error:", sys.exc_info()[0])
 
     return created_product, created_description
 

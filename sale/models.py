@@ -86,13 +86,13 @@ class SubCategory(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=512)
     sku = models.CharField(
-        max_length=32,
+        max_length=64,
         primary_key=True)
     asin = models.CharField(max_length=32)
     width = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
     depth = models.IntegerField(blank=True, null=True)
-    color = models.CharField(max_length=32, blank=True, null=True)
+    color = models.CharField(max_length=64, blank=True, null=True)
     category = models.ForeignKey(
         Category,
         blank=True,
