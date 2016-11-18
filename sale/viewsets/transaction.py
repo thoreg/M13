@@ -1,7 +1,7 @@
 from rest_framework import generics, viewsets
 
 from ..models import Product, Transaction, TransactionsByDay
-from ..serializers import TransactionSerializer, TransactionsByDaySerializer
+from ..serializers import TransactionsByDaySerializer, TransactionSerializer
 
 
 class TransactionViewSet(viewsets.ModelViewSet):
