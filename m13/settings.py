@@ -78,7 +78,7 @@ DATABASES = {
         'USER': os.environ['M13_DATABASE_USER'],
         'PASSWORD': os.environ['M13_DATABASE_USER_PASSWD'],
         'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'PORT': os.environ['M13_DATABASE_PORT'],
     }
 }
 
