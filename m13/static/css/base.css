@@ -14,14 +14,9 @@ body {
     margin-top: 75px;
 }
 
-.main {
-    min-height: 1024px;
-}
-
 .m13-chart {
     margin: 3em auto;
 }
-
 
 .dropdown-submenu {
     position: relative;

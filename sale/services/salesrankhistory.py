@@ -23,7 +23,7 @@ class SalesRankHistoryAggregationService():
 
         if begin and end:
             begin = datetime.strptime(begin, '%Y-%m-%d') - timedelta(days=1)
-            begin = datetime.strftime(begin, '%Y-%m-%d')
+            end = datetime.strftime(begin, '%Y-%m-%d')
             params['period'] = "AND _time > '{}' and _time <= '{}'".format(begin, end)
         else:
             params['period'] = ''

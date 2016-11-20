@@ -1,47 +1,83 @@
 {% extends "base.html" %}
-{% load nvd3_tags static %}
-{% block extra_js %}
-    {% for chart in charts_by_day %}
-        {% load_chart chart.charttype chart.chartdata chart.container_name chart.extra %}
-    {% empty %}
-        <!-- no charts available -->
-    {% endfor %}
+{% load static %}
 
-    {% for chart in charts_plain %}
-        {% load_chart chart.charttype chart.chartdata chart.container_name chart.extra %}
-    {% empty %}
-        <!-- no charts available -->
-    {% endfor %}
-
-{% endblock %}
 {% block title %}
     M13 Statistics - Product Details for {{ product.sku }}
 {% endblock %}
+
+{% block extra_js %}
+    <script src='{% static 'js/product.js' %}'></script>
+{% endblock %}
+
+{% block extra_css %}
+<style type="text/css">
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.bar {
+    fill: orange;
+}
+
+.bar:hover {
+    fill: orangered ;
+}
+
+.x.axis path {
+    display: none;
+}
+
+.d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+}
+
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+.d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+}
+
+h4 {
+    margin-top: 25px;
+}
+</style>
+{% endblock %}
+
+
 {% block main %}
     <h3>
-        Product Details for {{ product.sku }} /
+        {{ product.sku }} /
         <a href="https://www.amazon.de/dp/{{ product.asin }}" target="_blank">
             {{ product.asin }}
         </a>
+        / {{ product.name }}
     </h3>
 
-    <h4>{{ product.name }}</h4>
-    {% for chart in charts_by_day %}
-        <div class="m13-chart">
-            <h5>{{ chart.category }} / AVG by Day</h5>
-            {% include_container chart.container_name 400 '100%' %}
-        </div>
-    {% empty %}
-        No 'by day' charts available Dude
-    {% endfor %}
+    <h4>Durchschnittlicher SalesRank pro Tag</h4>
+    <div id="avg-salesrank-by-day"></div>
 
-    {% for chart in charts_plain %}
-        <div class="m13-chart">
-            <h5>{{ chart.category }} / Plain Values</h5>
-            {% include_container chart.container_name 400 '100%' %}
-        </div>
-    {% empty %}
-        No plain charts available Dude
-    {% endfor %}
+    <h4>Durschnittlicher Preis pro Tag</h4>
+    <div id="avg-price-by-day"></div>
+
 
 {% endblock %}

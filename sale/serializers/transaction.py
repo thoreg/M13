@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 
-from ..models import Transaction
+from ..models import Transaction, TransactionsByDay
 
 
 class TransactionSerializer(serializers.HyperlinkedModelSerializer):
@@ -32,26 +32,19 @@ class TransactionSerializer(serializers.HyperlinkedModelSerializer):
         return obj._time.strftime('%d')
 
 
-class TransactionStatsSerializer(serializers.HyperlinkedModelSerializer):
-    year = serializers.SerializerMethodField()
-    month = serializers.SerializerMethodField()
-    day = serializers.SerializerMethodField()
+class TransactionsByDaySerializer(serializers.ModelSerializer):
+    date = serializers.SerializerMethodField()
+    turnover = serializers.SerializerMethodField()
 
     class Meta:
-        model = Transaction
+        model = TransactionsByDay
         fields = (
-            'day',
-            'month',
-            'year',
-            'total',
-
+            'date',
+            'turnover',
         )
 
-    def get_year(self, obj):
-        return obj._time.strftime('%y')
+    def get_date(self, obj):
+        return obj._time.strftime('%Y-%m-%d')
 
-    def get_month(self, obj):
-        return obj._time.strftime('%m')
-
-    def get_day(self, obj):
-        return obj._time.strftime('%d')
+    def get_turnover(self, obj):
+        return obj.turnover
