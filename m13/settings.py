@@ -14,7 +14,9 @@ SECRET_KEY = 'g%!pun$#ouy(n_d88ygck=r#)e73^itd)(dk6q21@7q)q$)=o!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'stats.manufaktur13.com',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
