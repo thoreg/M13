@@ -206,11 +206,17 @@ def create_environment(branch):
 def collect_static():
     tagname = get_tag_name()
     print("Collect static files ...")
-    with silence():
-        with in_virtualenv(tagname):
-            project_path = os.path.join(env.srv_dir, tagname, PROJECT_NAME)
-            with cd(project_path):
-                run('python manage.py collectstatic --noinput --settings={}'.format(SETTINGS))
+    # with silence():
+    #     with in_virtualenv(tagname):
+    #         project_path = os.path.join(env.srv_dir, tagname, PROJECT_NAME)
+    #         with cd(project_path):
+    #             run('python manage.py collectstatic --noinput --settings={}'.format(SETTINGS))
+
+    with in_virtualenv(tagname):
+        project_path = os.path.join(env.srv_dir, tagname, PROJECT_NAME)
+        with cd(project_path):
+            run('python manage.py collectstatic --noinput --settings={}'.format(SETTINGS))
+
     ok()
 
 
