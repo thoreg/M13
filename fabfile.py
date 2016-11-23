@@ -64,11 +64,11 @@ def silence():
 @task
 def deploy(branch='master'):
     flake8()
-    # check_working_directory_clean()
 
     make_tag()
 
     appb(create_environment, branch)
+    app(bower_install)
     app(collect_static)
     # app(compile_messages)
     app(update_symlinks)
@@ -203,20 +203,27 @@ def create_environment(branch):
 
 @task
 @roles('app')
+def bower_install():
+    tagname = get_tag_name()
+    print("Bower install ...")
+    with silence():
+        with in_virtualenv(tagname):
+            project_path = os.path.join(env.srv_dir, tagname, PROJECT_NAME)
+            with cd(project_path):
+                run('python manage.py bower_install --noinput --settings={}'.format(SETTINGS))
+    ok()
+
+
+@task
+@roles('app')
 def collect_static():
     tagname = get_tag_name()
     print("Collect static files ...")
-    # with silence():
-    #     with in_virtualenv(tagname):
-    #         project_path = os.path.join(env.srv_dir, tagname, PROJECT_NAME)
-    #         with cd(project_path):
-    #             run('python manage.py collectstatic --noinput --settings={}'.format(SETTINGS))
-
-    with in_virtualenv(tagname):
-        project_path = os.path.join(env.srv_dir, tagname, PROJECT_NAME)
-        with cd(project_path):
-            run('python manage.py collectstatic --noinput --settings={}'.format(SETTINGS))
-
+    with silence():
+        with in_virtualenv(tagname):
+            project_path = os.path.join(env.srv_dir, tagname, PROJECT_NAME)
+            with cd(project_path):
+                run('python manage.py collectstatic --noinput --settings={}'.format(SETTINGS))
     ok()
 
 
