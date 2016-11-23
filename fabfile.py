@@ -261,9 +261,7 @@ def update_symlinks(tag=""):
 
 @roles('app')
 def restart_server():
-    # ? app server ?
-    # sudo("/etc/init.d/supervisor restart", shell=False)
-    sudo("/etc/init.d/apache2 restart", shell=False)
+    sudo("/etc/init.d/nginx restart", shell=False)
     ok()
 
 
