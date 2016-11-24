@@ -25,7 +25,7 @@ ENVIRONMENT = 'live'
 PROJECT_NAME = 'm13'
 PYTHON_VERSION = '3.4.2'
 REPOSITORY = 'git@github.com:thoreg/m13.git'
-SETTINGS = 'm13.settings'
+SETTINGS = 'm13.settings.production'
 LIVE_SERVER = "m13stats"  # defined in .ssh/config
 WHEELS_DIR = os.path.join(os.environ['M13_SERVER_PATH'], 'wheels')
 
