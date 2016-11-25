@@ -6,11 +6,17 @@ $(function() {
     var urlChunks = window.location.href.split('/');
     var sku = urlChunks[urlChunks.length - 2];
 
-    $.getJSON("/api/salesrankhistories/?sku=" + sku, function (data) {
+    $.getJSON("/api/salesrankhistories-by-day/?sku=" + sku, function (data) {
 
         $.each( data, function (i, obj) {
-            salesranks.push(obj.salesrank);
-            prices.push(parseInt(obj.price));
+            salesranks.push({
+                'date': obj._time.slice(0,10),
+                'salesrank': obj.salesrank
+            });
+            prices.push({
+                'date': obj._time.slice(0,10),
+                'price': parseInt(obj.price)
+            });
         });
 
         var dataset_salesranks = salesranks.slice(0, numberOfValues);
@@ -27,11 +33,11 @@ $(function() {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                // return "<strong>Salesrank:</strong> <span style='color:red'>" + d.frequency + "</span>";
-                return "<strong>Salesrank:</strong> <span style='color:red'>" + d + "</span>";
+                return d.date + " : <span style='color:red; margin-left: 5px;'>" +
+                           d.salesrank +
+                       "</span>";
             })
 
-        //Width and height
         var width = 800;
         var height = 600;
         var barPadding = 1;  // <-- New!
@@ -52,11 +58,11 @@ $(function() {
                     return i * (width / dataset.length);
                 })
                 .attr("y", function (d) {
-                    return height - (d * 0.004);
+                    return height - (d.salesrank * 0.004);
                 })
                 .attr("width", width / dataset.length - barPadding)
                 .attr("height", function (d) {
-                    return height * d;
+                    return height * d.salesrank;
                 })
                 .on('mouseover', tip.show)
                 .on('mouseout', tip.hide);
@@ -69,8 +75,9 @@ $(function() {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                // return "<strong>Salesrank:</strong> <span style='color:red'>" + d.frequency + "</span>";
-                return "<strong>Preis:</strong> <span style='color:red'>" + d + "</span>";
+                return d.date + " : <span style='color:red; margin-left: 5px;'>" +
+                           d.price +
+                       "</span>";
             })
 
         var width = 800;
