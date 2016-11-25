@@ -4,13 +4,15 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
 from sale.views import IndexView, ProductDetailView
-from sale.viewsets import (SalesRankHistoryList, TransactionDayStatsList,
-                           TransactionList, TransactionsByDayList)
+from sale.viewsets import (SalesRankHistoryByDayList, SalesRankHistoryList,
+                           TransactionDayStatsList, TransactionList, TransactionsByDayList)
 
 urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
+    url(r'^api/salesrankhistories-by-day/', SalesRankHistoryByDayList.as_view()),
     url(r'^api/salesrankhistories/', SalesRankHistoryList.as_view()),
+
     url(r'^api/stats/', TransactionDayStatsList.as_view()),
     url(r'^api/transactions/', TransactionList.as_view()),
     url(r'^api/transactions-by-day/',
