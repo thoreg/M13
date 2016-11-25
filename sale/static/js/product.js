@@ -99,11 +99,11 @@ $(function() {
                     return i * (width / dataset.length);
                 })
                 .attr("y", function (d) {
-                    return height - (d * 4);
+                    return height - (d.price * 4);
                 })
                 .attr("width", width / dataset.length - barPadding)
                 .attr("height", function (d) {
-                    return height * d;
+                    return height * d.price;
                 })
                 .on('mouseover', tip.show)
                 .on('mouseout', tip.hide);
