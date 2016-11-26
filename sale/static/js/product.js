@@ -1,33 +1,50 @@
 $(function() {
 
     var numberOfValues = 100;
-    var salesranks = [];
-    var prices = [];
-    var urlChunks = window.location.href.split('/');
-    var sku = urlChunks[urlChunks.length - 2];
 
-    $.getJSON("/api/salesrankhistories-by-day/?sku=" + sku, function (data) {
-
-        $.each( data, function (i, obj) {
-            salesranks.push({
-                'date': obj._time.slice(0,10),
-                'salesrank': obj.salesrank
-            });
-            prices.push({
-                'date': obj._time.slice(0,10),
-                'price': parseInt(obj.price)
-            });
-        });
-
-        var dataset_salesranks = salesranks.slice(0, numberOfValues);
-        var dataset_prices = prices.slice(0, numberOfValues);
-
-        drawSalesRankChart(dataset_salesranks, "#avg-salesrank-by-day");
-        drawPriceChart(dataset_prices, "#avg-price-by-day");
-
+    $('#datetimepicker_from').datetimepicker();
+    $('#datetimepicker_to').datetimepicker({
+        useCurrent: false //Important! See issue #1075
     });
 
+    function updateCharts (from_date, to_date) {
+
+        var salesranks = [];
+        var prices = [];
+
+        var urlChunks = window.location.href.split('/');
+        var sku = urlChunks[urlChunks.length - 2];
+        var url = '/api/salesrankhistories-by-day/?sku=' + sku;
+        if (from_date && to_date) {
+            url += '&from_date=' + from_date + '&to_date=' + to_date;
+        }
+
+        $.getJSON( url, function (data) {
+
+            $.each( data, function (i, obj) {
+                salesranks.push({
+                    'date': obj._time.slice(0,10),
+                    'salesrank': obj.salesrank
+                });
+                prices.push({
+                    'date': obj._time.slice(0,10),
+                    'price': parseInt(obj.price)
+                });
+            });
+
+            var dataset_salesranks = salesranks.slice(0, numberOfValues);
+            var dataset_prices = prices.slice(0, numberOfValues);
+
+            drawSalesRankChart(dataset_salesranks, "#avg-salesrank-by-day");
+            drawPriceChart(dataset_prices, "#avg-price-by-day");
+
+        });
+
+    };
+
     function drawSalesRankChart (dataset, cssId) {
+
+        $("#avg-salesrank-by-day").html('');
 
         var tip = d3.tip()
             .attr('class', 'd3-tip')
@@ -71,6 +88,8 @@ $(function() {
 
     function drawPriceChart (dataset, cssId) {
 
+        $('#avg-price-by-day').html('');
+
         var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
@@ -108,5 +127,30 @@ $(function() {
                 .on('mouseover', tip.show)
                 .on('mouseout', tip.hide);
     }
+
+    /**************************************************************************
+    *
+    *  actionListeners
+    *
+    ***************************************************************************/
+    $("#datetimepicker_from").on("dp.change", function (e) {
+        $('#datetimepicker_to').data("DateTimePicker").minDate(e.date);
+    });
+    $("#datetimepicker_to").on("dp.change", function (e) {
+        $('#datetimepicker_from').data("DateTimePicker").maxDate(e.date);
+    });
+
+    $("#product-submit-datepicker").click(function () {
+        var from_date = $('#datetimepicker_from').data().date.slice(0,10).replace(/\//g, '-');
+        var to_date = $('#datetimepicker_to').data().date.slice(0,10).replace(/\//g, '-');
+        updateCharts(from_date, to_date);
+    });
+
+    /**************************************************************************
+    *
+    *  init ()
+    *
+    ***************************************************************************/
+    updateCharts();
 
 });

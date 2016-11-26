@@ -65,19 +65,47 @@ h4 {
 
 
 {% block main %}
-    <h3>
-        {{ product.sku }} /
-        <a href="https://www.amazon.de/dp/{{ product.asin }}" target="_blank">
-            {{ product.asin }}
-        </a>
-        / {{ product.name }}
-    </h3>
+<div class="row">
+    <div class="col-xs-12">
+        <h3>
+            {{ product.sku }} /
+            <a href="https://www.amazon.de/dp/{{ product.asin }}" target="_blank">
+                {{ product.asin }}
+            </a>
+            / {{ product.name }}
+        </h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-10">
+        <h4>Durchschnittlicher SalesRank pro Tag</h4>
+        <div id="avg-salesrank-by-day"></div>
 
-    <h4>Durchschnittlicher SalesRank pro Tag</h4>
-    <div id="avg-salesrank-by-day"></div>
-
-    <h4>Durschnittlicher Preis pro Tag</h4>
-    <div id="avg-price-by-day"></div>
-
-
+        <h4>Durschnittlicher Preis pro Tag</h4>
+        <div id="avg-price-by-day"></div>
+    </div>
+    <div class="col-xs-2">
+        <div id="product-date-picker">
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker_from'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker_to'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <button id="product-submit-datepicker" class="btn btn-default">
+                Submit
+            </button>
+        </div>
+    </div>
+</div>
 {% endblock %}

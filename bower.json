@@ -18,6 +18,7 @@
     "bootstrap": "^3.3.7",
     "d3": "3.5.17",
     "jquery": "^3.1.0",
-    "nvd3": "^1.8.4"
+    "nvd3": "^1.8.4",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.43"
   }
 }

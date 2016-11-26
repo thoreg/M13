@@ -69,3 +69,7 @@ body {
 label {
     margin-right: 10px;
 }
+
+#product-date-picker {
+    margin-top: 50px;
+}
