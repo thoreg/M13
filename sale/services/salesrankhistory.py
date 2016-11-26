@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 
-from django.db import connection
+from django.db import connection, transaction
 
 from m13.utils.db.fetch import dictfetchall
 from sale.models import Product, SalesRankHistoryByDay
@@ -14,11 +14,11 @@ class SalesRankHistoryAggregationService():
     If not dryrun then write the result to the database.
 
     """
-
-    def aggregate_salesrank_history_by_day(self, sku, begin=None, end=None, dryrun=True):
-        print('   aggregate sku: {}'.format(sku))
+    @transaction.atomic
+    def aggregate_salesrank_history_by_day(self, product, begin=None, end=None, dryrun=True):
+        print('   aggregate sku: {}'.format(product.sku))
         params = {
-            'sku': sku,
+            'sku': product.sku,
         }
 
         if begin and end:
@@ -27,6 +27,8 @@ class SalesRankHistoryAggregationService():
             params['period'] = "AND _time > '{}' and _time <= '{}'".format(begin, end)
         else:
             params['period'] = ''
+
+        SalesRankHistoryByDay.objects.filter(product=product).delete()
 
         with connection.cursor() as cursor:
             cmd = """
@@ -47,7 +49,6 @@ class SalesRankHistoryAggregationService():
 
         print('    found {} entries - dryrun: {}'.format(len(rows), dryrun))
         if rows and not dryrun:
-            product = Product.objects.get(sku=sku)
             objects_to_create = []
             for row in rows:
                 obj = SalesRankHistoryByDay(product=product,
