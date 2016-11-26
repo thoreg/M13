@@ -306,6 +306,7 @@ def sync_local_db_with_live_db():
         'dump_name': dump_name,
         'dump_path': os.path.join(env.environment_dir, 'dumps', dump_name),
         'localhost': '127.0.0.1',
+        'pg_dump': 'pg_dump-9.6.1',
         'server': LIVE_SERVER,
         'user': os.environ['M13_DATABASE_USER'],
     }
