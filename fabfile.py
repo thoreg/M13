@@ -306,7 +306,7 @@ def sync_local_db_with_live_db():
         'dump_name': dump_name,
         'dump_path': os.path.join(env.environment_dir, 'dumps', dump_name),
         'localhost': '127.0.0.1',
-        'pg_dump': 'pg_dump-9.6.1',
+        'port': '5666',
         'server': LIVE_SERVER,
         'user': os.environ['M13_DATABASE_USER'],
     }
@@ -316,7 +316,7 @@ def sync_local_db_with_live_db():
     local('psql -h {localhost} -c "CREATE DATABASE {db} WITH OWNER {user}" postgres'.format(**params))
 
     # Dump db on live
-    run('pg_dump -h {localhost} -U {user} {db} > {dump_path}'.format(**params))
+    run('pg_dump -h {localhost} -p {port} -U {user} {db} > {dump_path}'.format(**params))
 
     # Insert the live dump in local db
     local('scp {server}:{dump_path} .'.format(**params))
