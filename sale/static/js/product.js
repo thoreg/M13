@@ -56,8 +56,14 @@ $(function() {
             })
 
         var width = 800;
-        var height = 600;
-        var barPadding = 1;  // <-- New!
+        var height = 333;
+        var barPadding = 1;
+
+        var yScale = d3.scale.linear()
+                        .domain([0, d3.max(dataset, function(d) {
+                            return d.salesrank;
+                        })])
+                        .range([0, height]);
 
         var svg = d3.select(cssId)
                     .append("svg")
@@ -75,11 +81,11 @@ $(function() {
                     return i * (width / dataset.length);
                 })
                 .attr("y", function (d) {
-                    return height - (d.salesrank * 0.004);
+                    return height - yScale(d.salesrank);
                 })
                 .attr("width", width / dataset.length - barPadding)
                 .attr("height", function (d) {
-                    return height * d.salesrank;
+                    return height * yScale(d.salesrank);
                 })
                 .on('mouseover', tip.show)
                 .on('mouseout', tip.hide);
@@ -102,6 +108,13 @@ $(function() {
         var width = 800;
         var height = 200;
         var barPadding = 1;
+
+        var yScale = d3.scale.linear()
+                        .domain([0, d3.max(dataset, function(d) {
+                            return d.price;
+                        })])
+                        .range([0, height]);
+
         var svg = d3.select(cssId)
                     .append("svg")
                     .attr("width", width)
@@ -118,11 +131,11 @@ $(function() {
                     return i * (width / dataset.length);
                 })
                 .attr("y", function (d) {
-                    return height - (d.price * 4);
+                    return height - yScale(d.price);
                 })
                 .attr("width", width / dataset.length - barPadding)
                 .attr("height", function (d) {
-                    return height * d.price;
+                    return height * yScale(d.price);
                 })
                 .on('mouseover', tip.show)
                 .on('mouseout', tip.hide);
