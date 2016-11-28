@@ -14,9 +14,12 @@ class SalesRankHistoryAggregationService():
     If not dryrun then write the result to the database.
 
     """
+    def __init__(self, log, driver):
+        self.log = log
+
     @transaction.atomic
     def aggregate_salesrank_history_by_day(self, product, begin=None, end=None, dryrun=True):
-        print('   aggregate sku: {}'.format(product.sku))
+        self.log.info('   aggregate sku: {}'.format(product.sku))
         params = {
             'sku': product.sku,
         }
@@ -47,7 +50,7 @@ class SalesRankHistoryAggregationService():
             cursor.execute(cmd)
             rows = dictfetchall(cursor)
 
-        print('    found {} entries - dryrun: {}'.format(len(rows), dryrun))
+        self.log.info('    found {} entries - dryrun: {}'.format(len(rows), dryrun))
         if rows and not dryrun:
             objects_to_create = []
             for row in rows:

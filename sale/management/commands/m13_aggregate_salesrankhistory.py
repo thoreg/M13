@@ -22,7 +22,7 @@ class Command(BaseCommand):
         if verbosity > 2:
             log.setLevel(logging.DEBUG)
 
-        srvc = SalesRankHistoryAggregationService()
+        srvc = SalesRankHistoryAggregationService(log)
         for product in Product.objects.all():
-            print('Aggregate: {}'.format(product.sku))
+            log.info('Aggregate: {}'.format(product.sku))
             srvc.aggregate_salesrank_history_by_day(product, dryrun=False)
