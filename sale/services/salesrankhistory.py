@@ -14,7 +14,7 @@ class SalesRankHistoryAggregationService():
     If not dryrun then write the result to the database.
 
     """
-    def __init__(self, log, driver):
+    def __init__(self, log):
         self.log = log
 
     @transaction.atomic
