@@ -106,6 +106,14 @@ h4 {
                 Submit
             </button>
         </div>
-    </div>
+        <div id="avg-values" title="Durchschnittlicher Salesrank der letzten sieben Tage von heute aus gerechnet und von gestern aus gerechnet (y = yesterday)">
+            &Oslash; (7): {{ avg.avg_salesrank_last_seven_days }}
+            <div class="triangle-{% if avg.better %}better{% else %}worse{% endif %}"></div>
+            <div class="yesterday">
+                &Oslash; (y7): {{ avg.avg_salesrank_before }}
+            </div>
+        </div>
+
+    </div><!-- col-xs-2 -->
 </div>
 {% endblock %}

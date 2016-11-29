@@ -1,5 +1,7 @@
+from pprint import pprint
 
 from django.db import models
+from django.db.models import Avg
 
 
 class Transaction(models.Model):
@@ -106,6 +108,40 @@ class Product(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.sku, self.name)
+
+    def avg_salesrank_last_seven_days(self):
+        """
+        Take the salesranks of the last 8 days and return the average salesrank
+        of the last 7 days and the value of the average of the last seven days
+        from yesterday and a tendence indicator if things getting better or worse.
+
+        """
+        salesranks = SalesRankHistoryByDay.objects.filter(product=self) \
+                                                  .order_by('-_time')   \
+                                                  .values()[:8]
+
+        # Trigger queryset here - otherwise django performs two queries
+        for s in salesranks:
+            pass
+
+        last_seven_days = salesranks[:7]
+        before_last_seven_days = salesranks[1:]
+
+        salesrank_before = 0
+        for b in before_last_seven_days:
+            salesrank_before += b['salesrank']
+        avg_salesrank_before = salesrank_before / len(before_last_seven_days)
+
+        salesrank_last_seven_days = 0
+        for s in last_seven_days:
+            salesrank_last_seven_days += s['salesrank']
+        avg_salesrank_last_seven_days = salesrank_last_seven_days / len(last_seven_days)
+
+        return {
+            'avg_salesrank_before': int(avg_salesrank_before),
+            'avg_salesrank_last_seven_days': int(avg_salesrank_last_seven_days),
+            'better': int(avg_salesrank_before) > int(avg_salesrank_last_seven_days)
+        }
 
 
 class ProductDescriptionDE(models.Model):

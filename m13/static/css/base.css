@@ -73,3 +73,36 @@ label {
 #product-date-picker {
     margin-top: 50px;
 }
+
+#avg-values {
+    margin-top: 1em;
+    margin-left: .2em;
+    font-size: 1.2em;
+}
+
+.triangle-worse {
+    border-color: transparent transparent red transparent;
+    border-style: solid;
+    border-width: 0px 10px 10px 10px;
+    display: inline-block;
+    height: 0px;
+    width: 0px;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.triangle-better {
+    border-color: transparent transparent green transparent;
+    border-style: solid;
+    border-width: 0px 10px 10px 10px;
+    display: inline-block;
+    height: 0px;
+    width: 0px;
+}
+
+.yesterday {
+    color: #606060 ;
+}
