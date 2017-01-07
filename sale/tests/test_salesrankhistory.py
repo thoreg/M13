@@ -5,7 +5,7 @@ import pytest
 from freezegun import freeze_time
 from model_mommy import mommy
 
-from sale.models import SalesRankHistory, SalesRankHistoryByDay
+from sale.models import Product, SalesRankHistory, SalesRankHistoryByDay
 from sale.services.salesrankhistory import SalesRankHistoryAggregationService
 
 
@@ -33,16 +33,18 @@ def test_aggregate_salesrank_history_by_day():
                        price=entry['price'],
                        salesrank=entry['salesrank'])
 
+    product = Product.objects.get()
+
     # A single day
     avg_sales_rank = srvc.aggregate_salesrank_history_by_day(
-        'sku1', begin='2016-10-17', end='2016-10-17')
+        product, begin='2016-10-17', end='2016-10-18')
 
     assert avg_sales_rank == [
         {'avg_price': Decimal('1.50'), 'avg_salesrank': 5, 'day': '2016-10-17'}]
 
     # A period
     avg_sales_rank = srvc.aggregate_salesrank_history_by_day(
-        'sku1', begin='2016-10-17', end='2016-10-18')
+        product, begin='2016-10-17', end='2016-10-19')
 
     assert avg_sales_rank == [
         {'avg_price': Decimal('1.20'), 'avg_salesrank': 8, 'day': '2016-10-18'},
@@ -63,7 +65,7 @@ def test_aggregate_salesrank_history_by_day():
     ]
 
     avg_sales_rank = srvc.aggregate_salesrank_history_by_day(
-        'sku1', begin='2016-10-17', end='2016-10-18', dryrun=False)
+        product, begin='2016-10-17', end='2016-10-19', dryrun=False)
 
     all_avg_sales_rank_by_day = SalesRankHistoryByDay.objects.all().order_by('-_time').values()
     assert len(all_avg_sales_rank_by_day) == 2

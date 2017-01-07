@@ -14,20 +14,25 @@ class SalesRankHistoryAggregationService():
     If not dryrun then write the result to the database.
 
     """
-    def __init__(self, log):
+    def __init__(self, log=None):
         self.log = log
 
     @transaction.atomic
     def aggregate_salesrank_history_by_day(self, product, begin=None, end=None, dryrun=True):
-        self.log.info('   aggregate sku: {}'.format(product.sku))
+        """
+        Aggregate all salesrank history entries per day from 'begin' till 'end'
+        but not including 'end'.
+
+        """
+        if self.log:
+            self.log.info('   aggregate sku: {}'.format(product.sku))
+
         params = {
             'sku': product.sku,
         }
 
         if begin and end:
-            begin = datetime.strptime(begin, '%Y-%m-%d') - timedelta(days=1)
-            end = datetime.strftime(begin, '%Y-%m-%d')
-            params['period'] = "AND _time > '{}' and _time <= '{}'".format(begin, end)
+            params['period'] = "AND _time >= '{}' and _time < '{}'".format(begin, end)
         else:
             params['period'] = ''
 
@@ -50,7 +55,9 @@ class SalesRankHistoryAggregationService():
             cursor.execute(cmd)
             rows = dictfetchall(cursor)
 
-        self.log.info('    found {} entries - dryrun: {}'.format(len(rows), dryrun))
+        if self.log:
+            self.log.info('    found {} entries - dryrun: {}'.format(len(rows), dryrun))
+
         if rows and not dryrun:
             objects_to_create = []
             for row in rows:
