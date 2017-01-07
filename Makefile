@@ -7,3 +7,6 @@ tdd:
 test:
 	find . -wholename "*tests/test_*.py" | xargs py.test ${OPT}
 
+check:
+	isort -rc .
+	flake8 .
