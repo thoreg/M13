@@ -197,6 +197,7 @@ def create_environment(branch):
             with cd(project_path):
                 if branch != 'master':
                     run('git checkout -b {} origin/{}'.format(branch, branch))
+                run('pip install cffi')
                 run('pip install --no-index --find-links={} -r requirements.txt'.format(WHEELS_DIR))
     ok()
 
