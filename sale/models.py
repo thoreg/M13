@@ -187,3 +187,21 @@ class TransactionsByDay(models.Model):
     turnover = models.DecimalField(
         max_digits=12,
         decimal_places=2)
+
+
+class ProductMarker(models.Model):
+    """
+    Mark/describe special events applied/related to the specific product.
+
+    """
+    product = models.ForeignKey(Product)
+    description = models.CharField(max_length=2048)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.product.name[:10] + ' ' + self.description[:42]
+
+    @property
+    def product_short_description(self):
+        return self.product.sku + ' ' + self.product.name[:24]
