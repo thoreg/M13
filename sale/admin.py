@@ -10,6 +10,7 @@ class TransactionAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'category')
     list_filter = ('category',)
+    search_fields = ['asin', 'sku', 'name']
 
 
 class ProductMarkerAdmin(admin.ModelAdmin):
