@@ -5,3 +5,6 @@
 bower_components
 /static
 ghostdriver.log
+*.swp
+tags
+.tags
