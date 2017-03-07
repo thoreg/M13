@@ -32,8 +32,8 @@ $(function() {
                 });
             });
 
-            var dataset_salesranks = salesranks.slice(0, numberOfValues);
-            var dataset_prices = prices.slice(0, numberOfValues);
+            var dataset_salesranks = salesranks.slice(salesranks.length - 100, salesranks.length);
+            var dataset_prices = prices.slice(prices.length - 100, prices.length);
 
             drawSalesRankChart(dataset_salesranks, "#avg-salesrank-by-day");
             drawPriceChart(dataset_prices, "#avg-price-by-day");
