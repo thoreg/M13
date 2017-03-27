@@ -1,4 +1,6 @@
 from pprint import pprint
+from django.core.exceptions import ValidationError
+from datetime import date
 
 from django.db import models
 from django.db.models import Avg
@@ -196,6 +198,9 @@ class ProductMarker(models.Model):
     """
     product = models.ForeignKey(Product)
     description = models.CharField(max_length=2048)
+    action_date = models.DateField(default=date.today)
+    global_event = models.BooleanField(default=False)
+
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 

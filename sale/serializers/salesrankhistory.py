@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ..models import SalesRankHistory, SalesRankHistoryByDay
+from ..models import Product, ProductMarker, SalesRankHistory, SalesRankHistoryByDay
 
 
 class SalesRankHistorySerializer(serializers.ModelSerializer):
@@ -15,6 +15,27 @@ class SalesRankHistorySerializer(serializers.ModelSerializer):
         )
 
 
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = (
+            'name',
+            'sku',
+            'asin',
+        )
+
+
+class ProductMarkerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductMarker
+        fields = (
+            'product',
+            'description',
+            'action_date',
+        )
+
+
 class SalesRankHistoryByDaySerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -23,5 +44,5 @@ class SalesRankHistoryByDaySerializer(serializers.ModelSerializer):
             'product',
             '_time',
             'price',
-            'salesrank'
+            'salesrank',
         )
