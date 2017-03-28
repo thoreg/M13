@@ -128,11 +128,11 @@ $(function() {
                 });
             });
 
-            var url = '/api/productmarkers/' + sku + '/';
+            var markerUrl = '/api/productmarkers/?sku=' + sku;
             if (from_date && to_date) {
                 url += '&from_date=' + from_date + '&to_date=' + to_date;
             }
-            $.getJSON( url, function (markers) {
+            $.getJSON(markerUrl, function (markers) {
 
                 dataset_salesranks = salesranks.slice(salesranks.length - numberOfValues, salesranks.length);
                 dataset_prices = prices.slice(prices.length - numberOfValues, prices.length);
@@ -156,7 +156,7 @@ $(function() {
     function updatePriceChart (data) {
 
         var width = 900;
-        var height = 250;
+        var height = 200;
         var barPadding = 1;
 
         var tip = d3.tip()
