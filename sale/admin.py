@@ -17,6 +17,11 @@ class ProductMarkerAdmin(admin.ModelAdmin):
     list_display = ('product_short_description', 'description', 'modified')
     list_filter = ('modified',)
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "product":
+            kwargs["queryset"] = Product.objects.order_by('sku')
+        return super(ProductMarkerAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 class CategoryAdmin(admin.ModelAdmin):
     ordering = ('name',)
