@@ -1,4 +1,5 @@
 
+import collections
 from sale.models import Product
 
 
@@ -20,4 +21,5 @@ def products(request):
     for category, products in product_title_by_category.items():
         product_title_by_category[category] = sorted(products)
 
-    return {'skus_with_salesrank_info_by_category': product_title_by_category}
+    return {'skus_with_salesrank_info_by_category': collections.OrderedDict(
+        sorted(product_title_by_category.items(), key=lambda t: t[0]))}
