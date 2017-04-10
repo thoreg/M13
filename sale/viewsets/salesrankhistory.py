@@ -47,6 +47,8 @@ class ProductMarkerList(generics.ListAPIView):
     def get_queryset(self):
         queryset = ProductMarker.objects.all()
 
+        global_markers = queryset.filter(global_event=True)
+
         sku = self.request.query_params.get('sku', None)
         if sku is not None:
             queryset = queryset.filter(product__sku=sku).order_by('action_date')
@@ -59,4 +61,4 @@ class ProductMarkerList(generics.ListAPIView):
             queryset = queryset.filter(action_date__range=[from_date, to_date]) \
                                .order_by('_time')
 
-        return queryset
+        return (queryset | global_markers).distinct()
