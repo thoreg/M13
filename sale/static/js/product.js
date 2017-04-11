@@ -129,9 +129,8 @@ $(function() {
             });
 
             var markerUrl = '/api/productmarkers/?sku=' + sku;
-            if (from_date && to_date) {
-                url += '&from_date=' + from_date + '&to_date=' + to_date;
-            }
+            markerUrl += '&show_category_markers';
+
             $.getJSON(markerUrl, function (markers) {
 
                 dataset_salesranks = salesranks.slice(salesranks.length - numberOfValues, salesranks.length);

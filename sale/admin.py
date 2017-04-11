@@ -14,8 +14,8 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class ProductMarkerAdmin(admin.ModelAdmin):
-    list_display = ('product_short_description', 'description', 'modified')
-    list_filter = ('modified',)
+    list_display = ('product_short_description', 'category', 'description', 'modified')
+    list_filter = ('modified', 'category')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "product":

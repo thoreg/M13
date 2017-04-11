@@ -197,6 +197,7 @@ class ProductMarker(models.Model):
 
     """
     product = models.ForeignKey(Product)
+    category = models.ForeignKey(Category)
     description = models.CharField(max_length=2048)
     action_date = models.DateField(default=date.today)
     global_event = models.BooleanField(default=False)
