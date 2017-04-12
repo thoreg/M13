@@ -72,9 +72,9 @@ $(function() {
                 .attr("y1", 0)
                 .attr("x2", function(d) { return x(d.date); })
                 .attr("y2", height)
-                .style("stroke-dasharray", ("3, 3"))  // <== This line here!!
-                .style("stroke-width", 3)
-                .style("stroke", "grey")
+                .style("stroke-dasharray", ("1, 1"))
+                .style("stroke-width", 5)
+                .style("stroke", "white")
                 .on("mouseover", function(d) {
                     div.transition()
                         .duration(100)
