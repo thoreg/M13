@@ -1,7 +1,5 @@
 import os
 
-import djcelery
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ALLOWED_HOSTS = [
@@ -20,7 +18,6 @@ INSTALLED_APPS = [
 
     'django_extensions',
     'djangobower',
-    'djcelery',
     'rest_framework',
 
     'm13',
@@ -192,5 +189,3 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Berlin'
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
-djcelery.setup_loader()
