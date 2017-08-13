@@ -23,7 +23,7 @@ from fabric.api import cd, env, execute, hide, local, prefix, roles, run, sudo, 
 
 ENVIRONMENT = 'live'
 PROJECT_NAME = 'm13'
-PYTHON_VERSION = '3.6.2'
+PYTHON_VERSION = '3.4.6'
 REPOSITORY = 'git@github.com:thoreg/m13.git'
 SETTINGS = 'm13.settings'
 LIVE_SERVER = "m13.thoreg.com"  # defined in .ssh/config
